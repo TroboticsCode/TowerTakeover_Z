@@ -82,6 +82,9 @@ void usercontrol(void) {
 
   //add local user control variables here:
   int liftPower;
+  int leftPower;
+  int rightPower;
+
   //User control code here, inside the loop:
 
   while (1) {
@@ -89,6 +92,18 @@ void usercontrol(void) {
     liftMotor.setVelocity(liftPower, pct);
     liftMotor.spin(fwd);
 
+    leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent));
+    rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent));
+    frontLeft.setVelocity(leftPower,pct);
+    backLeft.setVelocity(leftPower,pct);
+    frontLeft.setVelocity(rightPower,pct);
+    backLeft.setVelocity(rightPower,pct);
+
+    frontLeft.spin(fwd);
+    backLeft.spin(fwd);
+    frontRight.spin(fwd);
+    backRight.spin(fwd);
+    
     clawMotor.setVelocity(50, pct);
     if(Controller1.ButtonL2.pressing())
     {
