@@ -92,12 +92,12 @@ void usercontrol(void) {
     liftMotor.setVelocity(liftPower, pct);
     liftMotor.spin(fwd);
 
-    leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent));
-    rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent));
+    leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
+    rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent))/2;
     frontLeft.setVelocity(leftPower,pct);
     backLeft.setVelocity(leftPower,pct);
-    frontLeft.setVelocity(rightPower,pct);
-    backLeft.setVelocity(rightPower,pct);
+    frontRight.setVelocity(rightPower,pct);
+    backRight.setVelocity(rightPower,pct);
 
     frontLeft.spin(fwd);
     backLeft.spin(fwd);
