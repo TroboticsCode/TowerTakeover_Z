@@ -5,5 +5,4 @@
 
 //name the function and write it out here
 void Auton1(){
-  Tester1.spinFor(2,turns);
 }

@@ -59,7 +59,7 @@ void autonomous(void)
     break;
 
     case AutonB:
-      Auton2();
+      
     break;
           
     // Default = NO autonomous
@@ -78,35 +78,32 @@ void autonomous(void)
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
-  Auton1();
-
   wait(2,seconds);
 
-  Auton2();
   //add local user control variables here:
-  int power;
+  int liftPower;
   //User control code here, inside the loop:
 
   while (1) {
-    power = Controller1.Axis1.position(percent)+Controller1.Axis2.position(percent);
-    ClawMotor.setVelocity(power, pct);
-    ClawMotor.spin(reverse);
-    Controller1.ButtonY.pressed(autonomous);
+    liftPower = Controller1.Axis3.position(percent);
+    liftMotor.setVelocity(liftPower, pct);
+    liftMotor.spin(fwd);
 
-    if (Controller1.ButtonA.pressing())
+    clawMotor.setVelocity(50, pct);
+    if(Controller1.ButtonL2.pressing())
     {
-      Tester1.spin(forward);
+      clawMotor.spin(fwd);
+    }
+    else if (Controller1.ButtonL1.pressing())
+    {
+      clawMotor.spin(reverse);
+    }
+    else 
+    {
+      clawMotor.stop();
     }
 
-    else if (Controller1.ButtonB.pressing())
-    {
-      Tester1.spin(reverse);
-    }
 
-    else
-    {
-      Tester1.stop();
-    }
 
     wait(20, msec); // Sleep the task for a short amount of time to
   }

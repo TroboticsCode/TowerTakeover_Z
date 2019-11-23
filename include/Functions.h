@@ -5,8 +5,6 @@
 //as well as the API for the code.
 #include "vex.h"
 
-void oneMotor(int speed, int spins);
-void twoMotors(int speed, int spins);
 void Paint_Screen();
 
 #endif

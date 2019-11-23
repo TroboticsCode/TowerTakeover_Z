@@ -14,7 +14,6 @@ extern int state;
 //list the names of your autonomous programs here. the () assumes that there
 //are no parameters for these
 void Auton1();
-void Auton2();
 void cycle_autons();
 
 //Do not write the programs here. This is just a list of them. Write them 
