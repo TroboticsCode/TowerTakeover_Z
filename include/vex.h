@@ -19,6 +19,8 @@
 
 #include "robot-config.h"
 
+#define PI 3.1416
+
 //include "testingAuton1.cpp"
 
 #define waitUntil(condition)                                                   \

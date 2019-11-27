@@ -7,4 +7,6 @@
 
 void Paint_Screen();
 
+void drive(int inches, int speed);
+
 #endif
