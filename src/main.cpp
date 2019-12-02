@@ -88,10 +88,12 @@ void usercontrol(void) {
   //User control code here, inside the loop:
 
   while (1) {
+    //this runs the arm up and down
     liftPower = Controller1.Axis3.position(percent);
     liftMotor.setVelocity(liftPower, pct);
     liftMotor.spin(fwd);
 
+    //this runs the arcade drive control
     leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
     rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent))/2;
     frontLeft.setVelocity(leftPower,pct);
@@ -104,6 +106,7 @@ void usercontrol(void) {
     frontRight.spin(fwd);
     backRight.spin(fwd);
     
+    //this runs the claw
     clawMotor.setVelocity(50, pct);
     if(Controller1.ButtonL2.pressing())
     {
