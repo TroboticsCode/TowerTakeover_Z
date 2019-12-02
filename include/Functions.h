@@ -7,6 +7,6 @@
 
 void Paint_Screen();
 
-void drive(int inches, int speed);
+void drive(float inches, int speed);
 
 #endif

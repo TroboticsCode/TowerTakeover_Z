@@ -4,6 +4,8 @@
 //always include vex.h because it has all the robot setup declarations
 //as well as the API for the code.
 #include "vex.h"
+#include "Functions.h"
+
 
 #define NONE 0
 #define AutonR 1
