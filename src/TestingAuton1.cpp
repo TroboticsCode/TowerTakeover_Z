@@ -5,6 +5,7 @@
 
 //name the function and write it out here
 void Auton1(){
+  clawMotor.spinFor(.5, turns);
   drive(40,50);
   wait(20, msec);
   drive(40,-50);

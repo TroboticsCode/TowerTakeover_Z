@@ -91,7 +91,7 @@ void usercontrol(void) {
     //this runs the arm up and down
     liftPower = Controller1.Axis3.position(percent);
     liftMotor.setVelocity(liftPower, pct);
-    liftMotor.spin(fwd);
+    liftMotor.spin(reverse);
 
     //this runs the arcade drive control
     leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
@@ -108,6 +108,7 @@ void usercontrol(void) {
     
     //this runs the claw
     clawMotor.setVelocity(50, pct);
+    clawMotor.setStopping(hold);
     if(Controller1.ButtonL2.pressing())
     {
       clawMotor.spin(fwd);
