@@ -1,72 +1,233 @@
-//crucial to include the header file that includes the functions written out here
-#include "Functions.h"
+/********************************************************************
+ *    DriveFunctions.cpp
+ * This is where all the drive code lives for user and auton
+ * Make sure you have done all the configs in DriveFunctionsConfig.h
+ *******************************************************************/
 
-//put the diameter of your wheels, in inches, here. the default is 4 inch wheels
-#define WHEEL_DIAMETER 4
+#include "DriveFunctionsConfig.h"
+using namespace vex;
 
-//need to test if using negative inches values drives the robot backward
-void driveDist(float inches, int speed){
+#ifdef CHASSIS_4_MOTOR_INLINE
+  motor FrontLeft = motor(FrontLeftPort, GEAR_SET, true);
+  motor BackLeft = motor(BackLeftPort, GEAR_SET, true);
+  motor FrontRight = motor(FrontRightPort, GEAR_SET, false);
+  motor BackRight = motor(BackRightPort, GEAR_SET, false);
 
-frontLeft.setVelocity(speed,percent);
-backLeft.setVelocity(speed,percent);
-backRight.setVelocity(speed,percent);
-frontRight.setVelocity(speed,percent);
+#elif defined(CHASSIS_2_MOTOR_INLINE)
+  motor DriveLeft = motor(DriveLeftPort, GEAR_SET, false);
+  motor DriveRight = motor(DriveRightPort, GEAR_SET, true);
 
-//converts linear inches to wheel rotations
-float wheel_rotations = inches / (WHEEL_DIAMETER*PI);
+#elif defined(CHASSIS_X_DRIVE)
+  //coming soon!
+#endif
 
-frontLeft.spinFor(wheel_rotations,turns, false);
-frontRight.spinFor(wheel_rotations,turns, false);
-backLeft.spinFor(wheel_rotations,turns, false);
-backRight.spinFor(wheel_rotations,turns);
+#ifdef GYRO
+  inertial myGyro = inertial(GYRO_PORT);
+#endif
 
+/**************************************************
+ * @brief: moves the robot forward or back
+ *    at a given speed
+ *
+ * @param distance: how far to move in inches, absolute value
+ * @param velocity: how fast to move, signed value
+ *                  sign determines direction
+ **************************************************/
+void moveLinear(float distance, int velocity)
+{
+  float rotations = distance * (1/((float)ROTATION_FACTOR));
+  Brain.Screen.print("Rotations to turn: %f", rotations);
+  Brain.Screen.newLine();
+  Brain.Screen.print("Rotation Factor: %f", ROTATION_FACTOR);
+  wait(1, sec);
+
+#if defined(PID)
+  float DriveR_Power = 0;
+  float DriveL_Power = 0;
+
+  pidStruct_t driveL_PID;
+  pidStruct_t driveR_PID;
+
+  pidInit(&driveL_PID, 80, 0, 10, 10, 20);
+  pidInit(&driveR_PID, 80, 0, 10, 10, 20);
+
+  #if defined (CHASSIS_2_MOTOR_INLINE)
+    DriveRight.resetRotation();
+    DriveLeft.resetRotation();
+  #elif defined(CHASSIS_4_MOTOR_INLINE)
+    FrontLeft.resetRotation();
+    FrontRight.resetRotation();
+    BackLeft.resetRotation();
+    BackRight.resetRotation();
+  #endif
+ 
+  printPIDValues(&driveR_PID);
+
+  do
+  {
+    #if defined (CHASSIS_2_MOTOR_INLINE)
+      printPIDValues(&driveR_PID);
+      DriveR_Power = (velocity/100.0f) * pidCalculate(&driveR_PID, rotations, DriveRight.rotation(rev));
+      DriveL_Power = (velocity/100.0f) * pidCalculate(&driveL_PID, rotations, DriveLeft.rotation(rev));
+
+      DriveRight.spin(forward, DriveR_Power, pct);
+      DriveLeft.spin(forward, DriveL_Power, pct);
+
+    #elif defined (CHASSIS_4_MOTOR_INLINE)
+      DriveR_Power = (velocity/100.0f) * pidCalculate(&driveR_PID, rotations, BackRight.rotation(rev));
+      DriveL_Power = (velocity/100.0f) * pidCalculate(&driveL_PID, rotations, BackeLeft.rotation(rev));
+
+      FrontRight.spin(forward, DriveR_Power, pct);
+      FrontLeft.spin(forward, DriveL_Power, pct);
+      BackLeft.spin(forward, DriveL_Power, pct);
+      BackRight.spin(forward, DriveR_Power, pct);
+    #endif
+    
+  }while(fabs(driveR_PID.avgError) > 0.05 || fabs(driveL_PID.avgError) > 0.05);
+
+#elif !defined (PID)
+  #if defined (CHASSIS_2_MOTOR_INLINE)
+    DriveRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    DriveLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+  #elif defined (CHASSIS_4_MOTOR_INLINE)
+    FrontLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    BackLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    FrontRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    BackRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+  #endif
+#endif
 }
 
 
-void driveDistR(float inches, int speed){
+void moveStop(void)
+{
+#ifdef CHASSIS_4_MOTOR_INLINE
+  FrontLeft.stop();
+  BackLeft.stop();
+  FrontRight.stop();
+  BackRight.stop();
 
-frontLeft.setVelocity(-speed,percent);
-backLeft.setVelocity(-speed,percent);
-backRight.setVelocity(-speed,percent);
-frontRight.setVelocity(-speed,percent);
-
-//converts linear inches to wheel rotations
-float wheel_rotations = inches / (WHEEL_DIAMETER*PI);
-
-frontLeft.spinFor(-wheel_rotations,turns, false);
-frontRight.spinFor(-wheel_rotations,turns, false);
-backLeft.spinFor(-wheel_rotations,turns, false);
-backRight.spinFor(-wheel_rotations,turns);
-
+#elif defined(CHASSIS_2_MOTOR_INLINE)
+  DriveRight.stop(brakeType::hold);
+  DriveLeft.stop(brakeType::hold);
+#endif
 }
 
 
-void turnRight(float targetdegree, int speed){
-  float turnSpins=targetdegree/112;
+void moveRotate(int16_t degrees, int velocity)
+{
+  float arcLength = (degrees/360.0f) * CIRCUMFERENCE;
+  float rotFactor = ROTATION_FACTOR;
+  float rotations = arcLength / rotFactor;
 
-  frontLeft.setVelocity(speed,percent);
-  frontRight.setVelocity(speed,percent);
-  backLeft.setVelocity(speed,percent);
-  backRight.setVelocity(speed,percent);
+  Brain.Screen.clearScreen();
+  Brain.Screen.setCursor(1, 1);
+  Brain.Screen.print("rotations: %f", rotations);
+  Brain.Screen.newLine();
+  Brain.Screen.print("arc length: %f", arcLength);
+  Brain.Screen.newLine();
+  Brain.Screen.print("Hyp: %f", HYPOTENUSE);
+  Brain.Screen.newLine();
+  Brain.Screen.print("Circ: %f", CIRCUMFERENCE);
+  Brain.Screen.newLine();
+  Brain.Screen.print("rotations factor: %f", ROTATION_FACTOR);
+  
+  wait(1, sec);
 
-  frontLeft.spinFor(turnSpins, turns,false);
-  frontRight.spinFor(-turnSpins,turns,false);
-  backLeft.spinFor(turnSpins, turns,false);
-  backRight.spinFor(-turnSpins, turns,true);
-}
+#if defined(PID) 
+  #ifdef GYRO
+    myGyro.calibrate();
+    while(myGyro.isCalibrating());
+    myGyro.resetRotation();
+  #endif
 
-void turnLeft(float targetdegree, int speed){
-  float turnSpins=targetdegree/112;
-  Brain.Screen.setCursor(1,1);
-  Brain.Screen.print(turnSpins);
+  #ifdef CHASSIS_2_MOTOR_INLINE
+    DriveLeft.resetRotation();
+    DriveRight.resetRotation();
+  #elif defined CHASSIS_4_MOTOR_INLINE
+    FrontLeft.resetRotation();
+    FrontRight.resetRotation();
+    BackLeft.resetRotation();
+    BackRight.resetRotation();
+  #endif
 
-  frontLeft.setVelocity(speed,percent);
-  frontRight.setVelocity(speed,percent);
-  backLeft.setVelocity(speed,percent);
-  backRight.setVelocity(speed,percent);
+  #if !defined GYRO
+    pidStruct_t rotateR_PID;
+    pidStruct_t rotateL_PID;
 
-  frontLeft.spinFor(-turnSpins, turns,false);
-  frontRight.spinFor(turnSpins,turns,false);
-  backLeft.spinFor(-turnSpins, turns,false);
-  backRight.spinFor(turnSpins, turns,true);
+    pidInit(&rotateR_PID, 100, 0, 10, 15, 10);
+    pidInit(&rotateL_PID, 100, 0, 10, 15, 10);
+
+    float DriveR_Power = 0;
+    float DriveL_Power = 0;
+
+  #elif defined GYRO
+    pidStruct_t rotatePID;
+    pidInit(&rotatePID, 2, 0, 0.8, 30, 10);
+
+    float motorPower = 0;
+  #endif
+
+  do
+  {
+  #if defined (GYRO)
+    motorPower = (velocity/100.0f) * pidCalculate(&rotatePID, degrees, myGyro.rotation(rotationUnits::deg));
+  #elif !defined (GYRO)
+    #ifdef CHASSIS_4_MOTOR_INLINE
+      DriveL_Power = (velocity/100.0f) * pidCalculate(&rotateL_PID, rotations, BackLeft.rotation(rev));
+      DriveR_Power = (velocity/100.0f) * pidCalculate(&rotateR_PID, rotations, BackRight.rotation(rev));
+    #elif defined CHASSIS_2_MOTOR_INLINE
+      DriveL_Power = (velocity/100.0f) * pidCalculate(&rotateL_PID, rotations, DriveLeft.rotation(rev));
+      DriveR_Power = (velocity/100.0f) * pidCalculate(&rotateR_PID, rotations, -1.0f * DriveRight.rotation(rev));
+    #endif
+  #endif
+
+  #if defined (GYRO)
+    printPIDValues(&rotatePID);
+    #ifdef CHASSIS_4_MOTOR_INLINE
+      FrontRight.spin(forward, motorPower, pct);
+      FrontLeft.spin(reverse, motorPower, pct);
+      BackRight.spin(forward, motorPower, pct);
+      BackLeft.spin(reverse, motorPower, pct);
+
+    #elif defined CHASSIS_2_MOTOR_INLINE
+      DriveRight.spin(reverse, motorPower, pct);
+      DriveLeft.spin(forward, motorPower, pct);
+    #endif
+
+  #else 
+    printPIDValues(&rotateR_PID);
+    #ifdef CHASSIS_4_MOTOR_INLINE
+      FrontRight.spin(forward, DriveR_Power, pct);
+      FrontLeft.spin(reverse, DriveL_Power, pct);
+      BackRight.spin(forward, DriveR_Power, pct);
+      BackLeft.spin(reverse, DriveL_Power, pct);
+
+    #elif defined CHASSIS_2_MOTOR_INLINE
+      DriveRight.spin(reverse, DriveR_Power, pct);
+      DriveLeft.spin(forward, DriveL_Power, pct);
+    #endif
+  #endif
+
+  wait(10, msec);
+
+  #if defined GYRO
+  }while(fabs(rotatePID.avgError) > 0.8); //error in degrees
+  #elif !defined GYRO
+  }while(fabs(rotateR_PID.avgError) > 0.05 || fabs(rotateL_PID.avgError) > 0.5); //error in units of revs
+  #endif
+  //end do-while
+
+#elif !defined(PID) && !defined(GYRO)
+  #ifdef CHASSIS_4_MOTOR_INLINE
+    FrontLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    BackLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    FrontRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    BackRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+
+  #elif defined CHASSIS_2_MOTOR_INLINE
+    DriveRight.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+    DriveLeft.rotateFor(rotations, rotationUnits::rev, velocity, velocityUnits::pct, false);
+  #endif
+#endif
 }
