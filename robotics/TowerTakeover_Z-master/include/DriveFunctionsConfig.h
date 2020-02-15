@@ -27,8 +27,8 @@ void moveStop(void);
  * uncomment the chassis type here
  * x drive assumes 4 drive motors
  */
-//#define CHASSIS_4_MOTOR_INLINE
-#define CHASSIS_2_MOTOR_INLINE
+#define CHASSIS_4_MOTOR_INLINE
+//#define CHASSIS_2_MOTOR_INLINE
 //#define CHASSIS_X_DRIVE
 
 /*    Drive Motor Ports
@@ -38,15 +38,15 @@ void moveStop(void);
  *  looking forward
  */
 #ifdef CHASSIS_4_MOTOR_INLINE
-  extern motor FrontLeft;
-  extern motor FrontRight;
-  extern motor BackLeft;
-  extern motor BackRight;
+  extern motor frontLeft;
+  extern motor frontRight;
+  extern motor backLeft;
+  extern motor backRight;
 
-  #define FrontLeftPort     PORT9
-  #define FrontRightPort    PORT6
+  #define FrontLeftPort     PORT14
+  #define FrontRightPort    PORT13
   #define BackLeftPort      PORT11
-  #define BackRightPort     PORT20
+  #define BackRightPort     PORT12
 
 #elif defined(CHASSIS_2_MOTOR_INLINE)
   extern motor DriveLeft;
@@ -64,8 +64,8 @@ void moveStop(void);
  #define CHASSIS_WIDTH    9.25f
  #define CHASSIS_LENGTH   10.5f
 
-#define HYPOTENUSE sqrt(pow(CHASSIS_WIDTH,2) + pow(CHASSIS_LENGTH,2))
-#define RADIUS  HYPOTENUSE/2.0f
+#define HYPOTENUSE 17.72f  //sqrt(pow(CHASSIS_WIDTH,2) + pow(CHASSIS_LENGTH,2))
+#define RADIUS  8.86f     //HYPOTENUSE/2.0f
 #define CIRCUMFERENCE HYPOTENUSE * M_PI
 
 /*     Wheel Size 

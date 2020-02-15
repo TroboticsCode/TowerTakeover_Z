@@ -1,13 +1,10 @@
 //crucial that you include the header file that lists the autons
 
 #include "Autons.h"
+#include "vex.h"
 
 
 //name the function and write it out here
-
-
-
-
 
 void Auton1(){
   liftlMotor.setPosition(0,degrees);
@@ -16,35 +13,21 @@ void Auton1(){
   
   Lift(-470);
 
-  driveDist(9.5,30);
+  /*driveDist(9.5,30);
   wait(1000, msec);
   clawOpen(500);
   driveDistR(8,30);
   Lift(-30);
   turnLeft(45,30);
-  driveDistR(2,20);
+  driveDistR(2,20);*/
 
-
- /*
-
-
-  midtowerPosition();
-  clawOpen();
-
-  turnRight(90,50);
-  clawOpen(1000);
-  Lift(30);
-  clawClose(500);
-  drive(40,50);
-  turnRight(90,50);
-  drive(70,50);
-  Lift(-30);
+  moveLinear(9.5, 100);
+  wait(1000, msec);
   clawOpen(500);
-  drive(-20,50);
-  turnRight(90,50);
-  drive(50,50);
-  */
-
+  moveLinear(-8, 30);
+  Lift(-30);
+  moveRotate(-45, 100);
+  moveLinear(-2, 100);
 
 }
 

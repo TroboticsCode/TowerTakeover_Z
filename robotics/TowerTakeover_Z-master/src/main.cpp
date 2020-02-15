@@ -18,6 +18,7 @@
 #include "vex.h"
 #include "Autons.h"
 #include "Functions.h"
+#include "DriveFunctionsConfig.h"
 
 using namespace vex;
 

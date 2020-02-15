@@ -18,6 +18,7 @@
 #include "v5_vcs.h"
 
 #include "robot-config.h"
+#include "DriveFunctionsConfig.h"
 
 #define PI 3.1416
 

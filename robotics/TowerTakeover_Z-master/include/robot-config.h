@@ -1,5 +1,4 @@
 using namespace vex;
-
 extern brain Brain;
 
 // VEXcode devices
@@ -7,10 +6,10 @@ extern controller Controller1;
 extern motor clawMotor;
 extern motor liftlMotor;
 extern motor liftrMotor;
-extern motor frontLeft;
+/*extern motor frontLeft;
 extern motor frontRight;
 extern motor backLeft;
-extern motor backRight;
+extern motor backRight;*/
 
 
 
