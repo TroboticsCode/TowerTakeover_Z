@@ -12,6 +12,7 @@ void Auton1(){
   clawClose(600);
   
   Lift(-470);
+  wait(3, sec);
 
   /*driveDist(9.5,30);
   wait(1000, msec);
@@ -22,12 +23,18 @@ void Auton1(){
   driveDistR(2,20);*/
 
   moveLinear(9.5, 100);
+  moveStop();
   wait(1000, msec);
   clawOpen(500);
-  moveLinear(-8, 30);
+  moveLinear(-8, 100);
+  moveStop();
+  wait(1,sec);
   Lift(-30);
+  wait(3,sec);
   moveRotate(-45, 100);
+  moveStop();
   moveLinear(-2, 100);
+  moveStop();
 
 }
 

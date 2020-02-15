@@ -48,8 +48,8 @@ void moveLinear(float distance, int velocity)
   pidStruct_t driveL_PID;
   pidStruct_t driveR_PID;
 
-  pidInit(&driveL_PID, 30, 0, 10, 10, 20);
-  pidInit(&driveR_PID, 30, 0, 10, 10, 20);
+  pidInit(&driveL_PID, 90, 0, 10, 20, 20);
+  pidInit(&driveR_PID, 90, 0, 10, 20, 20);
 
   #if defined (CHASSIS_2_MOTOR_INLINE)
     DriveRight.resetRotation();
@@ -155,8 +155,8 @@ void moveRotate(int16_t degrees, int velocity)
     pidStruct_t rotateR_PID;
     pidStruct_t rotateL_PID;
 
-    pidInit(&rotateR_PID, 30, 0, 10, 10, 10);
-    pidInit(&rotateL_PID, 30, 0, 10, 10, 10);
+    pidInit(&rotateR_PID, 70, 0, 10, 10, 10);
+    pidInit(&rotateL_PID, 70, 0, 10, 10, 10);
 
     float DriveR_Power = 0;
     float DriveL_Power = 0;
@@ -175,7 +175,7 @@ void moveRotate(int16_t degrees, int velocity)
   #elif !defined (GYRO)
     #ifdef CHASSIS_4_MOTOR_INLINE
       DriveL_Power = (velocity/100.0f) * pidCalculate(&rotateL_PID, rotations, backLeft.rotation(rev));
-      DriveR_Power = (velocity/100.0f) * pidCalculate(&rotateR_PID, rotations, backRight.rotation(rev));
+      DriveR_Power = (velocity/100.0f) * pidCalculate(&rotateR_PID, rotations, -1.0f * backRight.rotation(rev));
     #elif defined CHASSIS_2_MOTOR_INLINE
       DriveL_Power = (velocity/100.0f) * pidCalculate(&rotateL_PID, rotations, DriveLeft.rotation(rev));
       DriveR_Power = (velocity/100.0f) * pidCalculate(&rotateR_PID, rotations, -1.0f * DriveRight.rotation(rev));
@@ -198,10 +198,10 @@ void moveRotate(int16_t degrees, int velocity)
   #else 
     printPIDValues(&rotateR_PID);
     #ifdef CHASSIS_4_MOTOR_INLINE
-      frontRight.spin(forward, DriveR_Power, pct);
-      frontLeft.spin(reverse, DriveL_Power, pct);
-      backRight.spin(forward, DriveR_Power, pct);
-      backLeft.spin(reverse, DriveL_Power, pct);
+      frontRight.spin(reverse, DriveR_Power, pct);
+      frontLeft.spin(forward, DriveL_Power, pct);
+      backRight.spin(reverse, DriveR_Power, pct);
+      backLeft.spin(forward, DriveL_Power, pct);
 
     #elif defined CHASSIS_2_MOTOR_INLINE
       DriveRight.spin(reverse, DriveR_Power, pct);
