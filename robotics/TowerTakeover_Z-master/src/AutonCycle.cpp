@@ -33,9 +33,14 @@ void cycle_autons(void)
     else if (state == AutonB)
     {
         state = AutonX;
-        strcpy(state_name, "Auton_3");
+        strcpy(state_name, "Auton_R");
     }
     else if (state == AutonX)
+    {
+        state = AutonY;
+        strcpy(state_name, "Auton_L");
+    }
+    else if (state == AutonY)
     {
       state = NONE;
       strcpy(state_name, "NONE");

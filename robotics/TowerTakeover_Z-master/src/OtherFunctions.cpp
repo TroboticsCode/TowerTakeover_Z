@@ -3,7 +3,8 @@
 void Lift(int liftTarget){
   liftlMotor.setStopping(hold);
   liftlMotor.spinToPosition(liftTarget,degrees,false);
-  liftrMotor.spinToPosition(liftTarget, degrees);
+  while(!liftrMotor.spinToPosition(liftTarget, degrees, false))
+  {}
   /*liftlMotor.stop();
   liftrMotor.stop();*/
   Brain.Screen.print(liftlMotor.position(degrees));

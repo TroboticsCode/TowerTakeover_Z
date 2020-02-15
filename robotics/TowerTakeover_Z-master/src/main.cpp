@@ -64,9 +64,12 @@ void autonomous(void)
     break;
           
     case AutonX:
-      Auton3();
+      AutonRight();
       break;
 
+    case AutonY:
+      AutonLeft();
+      break;
     // Default = NO autonomous
     default:
     break;

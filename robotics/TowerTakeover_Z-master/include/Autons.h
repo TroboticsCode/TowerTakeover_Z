@@ -11,6 +11,7 @@
 #define AutonR 1
 #define AutonB 2
 #define AutonX 3
+#define AutonY 4
 
 extern int state;
 
@@ -18,7 +19,8 @@ extern int state;
 //are no parameters for these
 void Auton1();
 void Auton2();
-void Auton3();
+void AutonRight();
+void AutonLeft();
 void cycle_autons();
 
 //Do not write the programs here. This is just a list of them. Write them 

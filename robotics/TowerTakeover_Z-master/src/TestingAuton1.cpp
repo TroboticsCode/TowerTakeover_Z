@@ -59,10 +59,18 @@ void Auton2(){
   //turnLeft(360,60);
 }
 
-void Auton3(){
+void AutonRight(){
   clawMotor.spinFor(.5, turns);
   driveDist(40,50);
   wait(20, msec);
-  driveDistR(40,50);
+  driveDistR(30,50);
+  turnRight(90,50);
+}
 
+void AutonLeft(){
+  clawMotor.spinFor(.5, turns);
+  driveDist(40,50);
+  wait(20, msec);
+  driveDistR(30,50);
+  turnLeft(90,50);
 }
