@@ -32,8 +32,14 @@ void cycle_autons(void)
     
     else if (state == AutonB)
     {
-        state = NONE;
-        strcpy(state_name, "NONE");
+        state = AutonX;
+        strcpy(state_name, "Auton_3");
     }
+    else if (state == AutonX)
+    {
+      state = NONE;
+      strcpy(state_name, "NONE");
+    }
+
     Paint_Screen();
 }

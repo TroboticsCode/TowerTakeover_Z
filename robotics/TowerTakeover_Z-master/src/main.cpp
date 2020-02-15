@@ -59,9 +59,14 @@ void autonomous(void)
     break;
 
     case AutonB:
+      Auton2();
       
     break;
           
+    case AutonX:
+      Auton3();
+      break;
+
     // Default = NO autonomous
     default:
     break;
@@ -78,7 +83,7 @@ void autonomous(void)
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
-  wait(2,seconds);
+  
 
   //add local user control variables here:
   int liftPower;
@@ -88,10 +93,21 @@ void usercontrol(void) {
   //User control code here, inside the loop:
 
   while (1) {
+    Brain.Screen.setCursor(1,1);
+    Brain.Screen.clearLine();
+    Brain.Screen.print(liftlMotor.position(degrees));
+    Brain.Screen.newLine();
+    Brain.Screen.clearLine();
+    Brain.Screen.print(liftrMotor.position(degrees));
     //this runs the arm up and down
     liftPower = Controller1.Axis3.position(percent);
-    liftMotor.setVelocity(liftPower, pct);
-    liftMotor.spin(reverse);
+    liftlMotor.setVelocity(liftPower, pct);
+    liftlMotor.spin(reverse);
+
+    liftrMotor.setVelocity(liftPower, pct);
+    liftrMotor.spin(reverse);
+
+    
 
     //this runs the arcade drive control
     leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
@@ -107,7 +123,7 @@ void usercontrol(void) {
     backRight.spin(fwd);
     
     //this runs the claw
-    clawMotor.setVelocity(50, pct);
+    clawMotor.setVelocity(100, pct);
     clawMotor.setStopping(hold);
     if(Controller1.ButtonL2.pressing())
     {
@@ -141,6 +157,6 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    wait(10, msec);
+    wait(100, msec);
   }
 }
