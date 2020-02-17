@@ -61,11 +61,11 @@ void moveStop(void);
  * (from wheel center to wheel center) of 
  * your chassis here in inches
  */
- #define CHASSIS_WIDTH    9.25f
- #define CHASSIS_LENGTH   10.5f
+ #define CHASSIS_WIDTH    9.0f
+ #define CHASSIS_LENGTH   9.0f
 
-#define HYPOTENUSE 17.72f  //sqrt(pow(CHASSIS_WIDTH,2) + pow(CHASSIS_LENGTH,2))
-#define RADIUS  8.86f     //HYPOTENUSE/2.0f
+#define HYPOTENUSE   sqrt(pow(CHASSIS_WIDTH,2) + pow(CHASSIS_LENGTH,2))
+#define RADIUS       HYPOTENUSE/2.0f
 #define CIRCUMFERENCE HYPOTENUSE * M_PI
 
 /*     Wheel Size 

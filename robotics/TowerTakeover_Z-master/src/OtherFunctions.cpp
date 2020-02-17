@@ -1,6 +1,9 @@
 #include "Functions.h"
 
 void Lift(int liftTarget){
+  liftlMotor.setVelocity(50, percent);
+  liftrMotor.setVelocity(50, percent);
+
   liftlMotor.setStopping(hold);
   liftlMotor.spinToPosition(liftTarget,degrees,false);
   liftrMotor.spinToPosition(liftTarget, degrees, true);
