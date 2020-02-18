@@ -64,27 +64,44 @@ void Auton2(){
   
   liftlMotor.setPosition(0,degrees);
   liftrMotor.setPosition(0,degrees);
-  moveLinear(8.5,100);
+  moveLinear(9,100);
   moveStop();
   clawClose(600);
-  Lift(-470);
-  wait(1, sec);
-  moveRotate(90, 85);
+  moveRotate(95, 85);
   moveStop();
-  moveLinear(12, 100);
+  wait(1, sec);
+  Lift(-470);
+  moveLinear(10, 100);
   moveStop();
   clawOpen(600);
   //put 1 cube in tower okay ^^
 
 
-  moveLinear(-7, 100);
+  moveLinear(-7.5, 100);
   moveStop();
   Lift(-42); //4 cubes
-  moveRotate(-90, 100);
+  moveRotate(-85, 100);
   moveStop();
-  moveLinear(14,80);
+  moveLinear(18.25,70);
   moveStop();
   clawClose(600);
+  
+  Lift(-70);
+  moveLinear(-26,65);
+  moveStop();
+  wait(2,sec);
+  moveRotate(-110, 70);
+  moveStop();
+
+  
+  moveLinear(20,45);
+  moveStop();
+  Lift(-105);//height for put 4 cubes in corner
+  moveLinear(10,45);
+  Lift(-65);
+  clawOpen(600);
+  moveStop();
+  moveLinear(-8,90);
   
 }
 

@@ -48,8 +48,8 @@ void moveLinear(float distance, int velocity)
   pidStruct_t driveL_PID;
   pidStruct_t driveR_PID;
 
-  pidInit(&driveL_PID, 50, 0, 15, 10, 20);
-  pidInit(&driveR_PID, 50, 0, 15, 10, 20);
+  pidInit(&driveL_PID, 60, 0, 10, 10, 20);
+  pidInit(&driveR_PID, 60, 0, 10, 10, 20);
 
   #if defined (CHASSIS_2_MOTOR_INLINE)
     DriveRight.resetRotation();
@@ -83,7 +83,7 @@ void moveLinear(float distance, int velocity)
       backRight.spin(forward, DriveR_Power, pct);
     #endif
     
-  }while(fabs(driveR_PID.avgError) > 0.05 || fabs(driveL_PID.avgError) > 0.05);
+  }while(fabs(driveR_PID.avgError) > 0.07 || fabs(driveL_PID.avgError) > 0.07);
 
 #elif !defined (PID)
   #if defined (CHASSIS_2_MOTOR_INLINE)
@@ -155,8 +155,8 @@ void moveRotate(int16_t degrees, int velocity)
     pidStruct_t rotateR_PID;
     pidStruct_t rotateL_PID;
 
-    pidInit(&rotateR_PID, 40, 0, 10, 7, 10);
-    pidInit(&rotateL_PID, 40, 0, 10, 7, 10);
+    pidInit(&rotateR_PID, 55, 0, 7, 7, 10);
+    pidInit(&rotateL_PID, 55, 0, 7, 7, 10);
 
     float DriveR_Power = 0;
     float DriveL_Power = 0;
