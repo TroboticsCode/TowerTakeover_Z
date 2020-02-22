@@ -67,7 +67,7 @@ void Auton2(){
   moveLinear(9,100);
   moveStop();
   clawClose(600);
-  moveRotate(95, 85);
+  moveRotate(100, 85);
   moveStop();
   wait(1, sec);
   Lift(-470);
@@ -80,9 +80,9 @@ void Auton2(){
   moveLinear(-7.5, 100);
   moveStop();
   Lift(-47); //4 cubes
-  moveRotate(-84, 100);
+  moveRotate(-87, 100);
   moveStop();
-  moveLinear(18.2,75);
+  moveLinear(18,75);
   moveStop();
   clawClose(700);
   
@@ -97,7 +97,7 @@ void Auton2(){
   moveLinear(20,50);
   moveStop();
   Lift(-105);//height for put 4 cubes in corner
-  moveLinear(10,45);
+  moveLinear(12,45);
   Lift(-63);
   clawOpen(600);
   moveStop();
