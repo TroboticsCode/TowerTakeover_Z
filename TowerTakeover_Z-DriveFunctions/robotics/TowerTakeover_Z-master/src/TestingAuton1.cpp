@@ -80,7 +80,7 @@ void Auton2(){
   moveLinear(-7.5, 100);
   moveStop();
   Lift(-47); //4 cubes
-  moveRotate(-87, 100);
+  moveRotate(-93, 100);
   moveStop();
   moveLinear(18,75);
   moveStop();
