@@ -105,6 +105,9 @@ void usercontrol(void) {
     Brain.Screen.print(liftrMotor.position(degrees));
     //this runs the arm up and down
     liftPower = Controller1.Axis3.position(percent);
+    liftlMotor.setStopping(hold);
+    liftrMotor.setStopping(hold);
+    
     liftlMotor.setVelocity(liftPower, pct);
     liftlMotor.spin(reverse);
 

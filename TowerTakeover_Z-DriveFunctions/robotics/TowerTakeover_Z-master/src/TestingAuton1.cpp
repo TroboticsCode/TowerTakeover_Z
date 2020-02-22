@@ -105,7 +105,7 @@ void Auton2(){
   moveStop();
   // above. all good. 1 cube in tower + 4 cubes in corner
 
-
+/*
   moveRotate(103, 95);
   moveStop();
   moveLinear(25, 90);
@@ -115,7 +115,7 @@ void Auton2(){
   moveStop();
   Lift(-290);
   clawOpen(600);
-
+*/
 }
 
 void AutonRight(){
