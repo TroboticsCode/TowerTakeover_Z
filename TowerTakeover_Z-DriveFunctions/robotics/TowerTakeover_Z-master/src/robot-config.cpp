@@ -9,7 +9,7 @@ brain  Brain;
 
 // VEXcode device constructors
 controller Controller1 = controller(primary);
-motor clawMotor = motor(PORT2, ratio36_1, false);
+motor clawMotor = motor(PORT20, ratio36_1, false);
 motor liftlMotor = motor(PORT5, ratio36_1, true);
 motor liftrMotor = motor(PORT4, ratio36_1, false);
 /*motor frontLeft = motor(PORT14, ratio18_1, false);

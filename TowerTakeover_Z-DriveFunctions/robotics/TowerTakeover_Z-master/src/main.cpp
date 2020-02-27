@@ -94,6 +94,9 @@ void usercontrol(void) {
   int leftPower;
   int rightPower;
 
+  bool driveSpeed = false;
+  bool speedChanged = false;
+
   //User control code here, inside the loop:
 
   while (1) {
@@ -105,6 +108,18 @@ void usercontrol(void) {
     Brain.Screen.print(liftrMotor.position(degrees));
     //this runs the arm up and down
     liftPower = Controller1.Axis3.position(percent);
+
+//this runs the arcade drive control
+    leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
+    rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent))/2;
+    
+    if (driveSpeed)
+    {
+      leftPower = liftPower/2;
+      rightPower = rightPower/2;
+      liftPower = liftPower/2;
+    }
+
     liftlMotor.setStopping(hold);
     liftrMotor.setStopping(hold);
     
@@ -114,11 +129,6 @@ void usercontrol(void) {
     liftrMotor.setVelocity(liftPower, pct);
     liftrMotor.spin(reverse);
 
-    
-
-    //this runs the arcade drive control
-    leftPower = (Controller1.Axis2.position(percent) + Controller1.Axis1.position(percent))/2;
-    rightPower = (Controller1.Axis2.position(percent) - Controller1.Axis1.position(percent))/2;
     frontLeft.setVelocity(leftPower,pct);
     backLeft.setVelocity(leftPower,pct);
     frontRight.setVelocity(rightPower,pct);
@@ -145,7 +155,12 @@ void usercontrol(void) {
       clawMotor.stop();
     }
 
-
+    if(Controller1.ButtonR2.pressing())
+    {
+     driveSpeed = !driveSpeed;
+     while(Controller1.ButtonR2.pressing())
+     {}
+    }
 
     wait(20, msec); // Sleep the task for a short amount of time to
   }
@@ -167,3 +182,5 @@ int main() {
     wait(100, msec);
   }
 }
+
+
