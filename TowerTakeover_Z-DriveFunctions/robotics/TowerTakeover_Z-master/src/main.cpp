@@ -115,7 +115,7 @@ void usercontrol(void) {
     
     if (driveSpeed)
     {
-      leftPower = liftPower/2;
+      leftPower = leftPower/2;
       rightPower = rightPower/2;
       liftPower = liftPower/2;
     }
