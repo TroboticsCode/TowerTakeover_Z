@@ -12,6 +12,7 @@ controller Controller1 = controller(primary);
 motor clawMotor = motor(PORT18, ratio36_1, false);
 motor liftlMotor = motor(PORT5, ratio36_1, true);
 motor liftrMotor = motor(PORT4, ratio36_1, false);
+limit liftSwitch = Brain.ThreeWirePort.B;
 /*motor frontLeft = motor(PORT14, ratio18_1, false);
 motor frontRight = motor(PORT13, ratio18_1, true);
 motor backLeft = motor(PORT11, ratio18_1, false);

@@ -119,9 +119,15 @@ void usercontrol(void) {
       rightPower = rightPower/2;
       liftPower = liftPower/2;
     }
+    if (liftSwitch.pressing()){
+      liftlMotor.setStopping(coast);
+      liftrMotor.setStopping(coast);
+    }
+    else {
+      liftlMotor.setStopping(hold);
+      liftrMotor.setStopping(hold);
+    }
 
-    liftlMotor.setStopping(hold);
-    liftrMotor.setStopping(hold);
     
     liftlMotor.setVelocity(liftPower, pct);
     liftlMotor.spin(reverse);

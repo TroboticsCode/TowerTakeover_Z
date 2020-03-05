@@ -6,6 +6,7 @@ extern controller Controller1;
 extern motor clawMotor;
 extern motor liftlMotor;
 extern motor liftrMotor;
+extern limit liftSwitch;
 /*extern motor frontLeft;
 extern motor frontRight;
 extern motor backLeft;
